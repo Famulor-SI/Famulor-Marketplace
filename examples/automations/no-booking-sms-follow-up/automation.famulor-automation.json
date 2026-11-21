@@ -1,0 +1,137 @@
+{
+  "format": "famulor.automation",
+  "version": 1,
+  "name": "Text callers who did not book",
+  "description": "A minute after an inbound call without a booking, the caller gets an SMS with your booking link.",
+  "tags": [
+    "follow-up",
+    "sms"
+  ],
+  "trigger": {
+    "type": "call.completed"
+  },
+  "graph": {
+    "nodes": [
+      {
+        "id": "trigger",
+        "type": "trigger",
+        "data": {
+          "label": "On Call Completed"
+        },
+        "position": {
+          "x": 80,
+          "y": 120
+        }
+      },
+      {
+        "id": "only_inbound",
+        "type": "action",
+        "data": {
+          "label": "Only inbound calls",
+          "action": "filter",
+          "config": {
+            "op": "eq",
+            "path": "data.direction",
+            "value": "inbound"
+          }
+        },
+        "position": {
+          "x": 430,
+          "y": 120
+        }
+      },
+      {
+        "id": "only_with_number",
+        "type": "action",
+        "data": {
+          "label": "Only calls with a caller number",
+          "action": "filter",
+          "config": {
+            "op": "exists",
+            "path": "data.from_number"
+          }
+        },
+        "position": {
+          "x": 789,
+          "y": 120
+        }
+      },
+      {
+        "id": "only_without_booking",
+        "type": "action",
+        "data": {
+          "label": "Only calls without a booking",
+          "action": "filter",
+          "config": {
+            "op": "neq",
+            "path": "data.analysis.success",
+            "value": "true"
+          }
+        },
+        "position": {
+          "x": 1260,
+          "y": 120
+        }
+      },
+      {
+        "id": "wait",
+        "type": "action",
+        "data": {
+          "label": "Wait 1 minute",
+          "action": "delay",
+          "config": {
+            "seconds": 60
+          }
+        },
+        "position": {
+          "x": 1705,
+          "y": 120
+        }
+      },
+      {
+        "id": "send_sms",
+        "type": "action",
+        "data": {
+          "label": "Send the booking link",
+          "action": "sms.send",
+          "config": {
+            "to": "{{data.from_number}}",
+            "body": "Thanks for calling! If you would still like an appointment, you can book one here: [your booking link]"
+          }
+        },
+        "position": {
+          "x": 2021,
+          "y": 111
+        }
+      }
+    ],
+    "edges": [
+      {
+        "id": "e-trigger-only_inbound",
+        "source": "trigger",
+        "target": "only_inbound"
+      },
+      {
+        "id": "e-only_inbound-only_with_number",
+        "source": "only_inbound",
+        "target": "only_with_number"
+      },
+      {
+        "id": "e-only_with_number-only_without_booking",
+        "source": "only_with_number",
+        "target": "only_without_booking"
+      },
+      {
+        "id": "e-only_without_booking-wait",
+        "source": "only_without_booking",
+        "target": "wait"
+      },
+      {
+        "id": "e-wait-send_sms",
+        "source": "wait",
+        "target": "send_sms"
+      }
+    ]
+  },
+  "source": "template"
+}

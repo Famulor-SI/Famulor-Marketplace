@@ -1,0 +1,19 @@
+name: Report a problem with a listed entry
+description: A connector or automation template from this repository doesn't work as described.
+title: "Problem: "
+labels: ["bug"]
+body:
+  - type: input
+    id: entry
+    attributes:
+      label: Entry
+      description: Folder of the entry, for example connectors/acme-orders.
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What happened?
+      description: What you did, what you expected and what you saw. Remove keys, customer data and conversation content.
+    validations:
+      required: true

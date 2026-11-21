@@ -1,0 +1,36 @@
+{
+  "$schema": "../../../schemas/connector.schema.json",
+  "slug": "acme-orders-mcp",
+  "name": "Acme Orders",
+  "version": "1.0.0",
+  "description": "Let your assistant look up order status, delivery dates and return options in your Acme shop while the customer is on the line.",
+  "category": "productivity",
+  "kind": "mcp",
+  "publisher": { "name": "Acme Inc.", "url": "https://acme.example" },
+  "maintainers": ["acme-dev"],
+  "license": "MIT",
+  "homepage": "https://acme.example",
+  "docs_url": "https://docs.acme.example/famulor",
+  "privacy_url": "https://acme.example/privacy",
+  "support": "mailto:support@acme.example",
+  "logo": "logo.svg",
+  "network": ["mcp.acme.example"],
+  "setup_instructions": "In Acme open Settings → API, create a key with read access to orders and paste it here. The key only needs read access.",
+  "config_schema": [
+    {
+      "key": "api_key",
+      "label": "Acme API key",
+      "type": "password",
+      "required": true,
+      "placeholder": "acme_live_…",
+      "help": "Settings → API in your Acme account. Read access to orders is enough."
+    }
+  ],
+  "template": {
+    "type": "mcp",
+    "name": "acme_orders",
+    "description": "Look up Acme orders by order number or customer email: status, delivery date and return options. Read-only.",
+    "url": "https://mcp.acme.example/mcp",
+    "headers": { "Authorization": "Bearer {{api_key}}" }
+  }
+}

@@ -1,0 +1,46 @@
+name: Request an app
+description: Ask for a connector or automation template that Famulor doesn't offer yet.
+title: "Request: "
+labels: ["request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check [Agent Connectors](https://docs.famulor.io/assistants/agent-tools#agent-connectors) and the [App Catalog](https://docs.famulor.io/automations/app-catalog) first. Don't post API keys, customer names or phone numbers.
+  - type: input
+    id: app
+    attributes:
+      label: App
+      description: Name and website of the app.
+      placeholder: "Acme CRM – https://acme.example"
+    validations:
+      required: true
+  - type: textarea
+    id: task
+    attributes:
+      label: What should your assistant or automation do with it?
+      description: Describe one real situation, for example "When a caller asks about an open invoice, the assistant reads the amount and due date from Acme."
+    validations:
+      required: true
+  - type: checkboxes
+    id: where
+    attributes:
+      label: Where do you need it?
+      options:
+        - label: Assistants during calls, chats, messages or emails (Agent Connectors)
+        - label: Automations
+  - type: input
+    id: api
+    attributes:
+      label: API or MCP server
+      description: A link to the app's API documentation or MCP server, if you know it.
+  - type: dropdown
+    id: build
+    attributes:
+      label: Who builds it?
+      options:
+        - I'd like Famulor to build it
+        - I'll open a pull request myself
+        - I work for the app vendor and want to list it
+    validations:
+      required: true

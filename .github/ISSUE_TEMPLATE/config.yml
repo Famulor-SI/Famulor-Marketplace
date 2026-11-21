@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Help with your Famulor account
+    url: https://www.famulor.io/support
+    about: Questions about your workspace, billing or an existing connector setup.
+  - name: Ideas and feature requests
+    url: https://community.famulor.io/c/feature-requests/2
+    about: Discuss product ideas with other Famulor users.
+  - name: Report a security problem
+    url: https://github.com/Famulor-SI/famulor-marketplace/blob/main/SECURITY.md
+    about: Report vulnerabilities privately by email, never in a public issue.

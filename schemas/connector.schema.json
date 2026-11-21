@@ -1,0 +1,130 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/Famulor-SI/famulor-marketplace/schemas/connector.schema.json",
+  "title": "Famulor connector",
+  "description": "connectors/<slug>/connector.json — one app in Tools → Agent Connectors. Famulor assistants call it during voice calls, web chat, messaging and email; automations can use MCP connectors too.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "slug",
+    "name",
+    "version",
+    "description",
+    "category",
+    "kind",
+    "publisher",
+    "maintainers",
+    "license",
+    "homepage",
+    "docs_url",
+    "privacy_url",
+    "support",
+    "logo",
+    "network",
+    "setup_instructions",
+    "config_schema",
+    "template"
+  ],
+  "properties": {
+    "$schema": { "type": "string" },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$",
+      "description": "Stable id. Equals the folder name. Never rename it after merge."
+    },
+    "name": { "type": "string", "minLength": 1, "maxLength": 128, "description": "Name on the store card." },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "description": "Semantic version. Raise it with every change."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 300,
+      "description": "One or two sentences for the store card: what the assistant can do with this app."
+    },
+    "category": {
+      "type": "string",
+      "enum": ["crm", "calendar", "telephony", "automation", "productivity", "utility", "other"]
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["mcp", "api_tool"],
+      "description": "mcp = a remote MCP server. api_tool = one HTTPS endpoint the assistant calls."
+    },
+    "publisher": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "url"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1, "maxLength": 128 },
+        "url": { "type": "string", "pattern": "^https://" }
+      }
+    },
+    "maintainers": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$" },
+      "description": "GitHub usernames that answer review questions and issues about this connector."
+    },
+    "license": { "type": "string", "minLength": 2, "maxLength": 64, "description": "SPDX id of this folder's content, e.g. MIT." },
+    "homepage": { "type": "string", "pattern": "^https://" },
+    "docs_url": { "type": "string", "pattern": "^https://", "description": "Public setup guide for Famulor users." },
+    "privacy_url": { "type": "string", "pattern": "^https://", "description": "Privacy policy that covers the data the connector receives." },
+    "support": {
+      "type": "string",
+      "pattern": "^(https://|mailto:)",
+      "description": "Where users get help: a support page or a mailto: address."
+    },
+    "logo": {
+      "type": "string",
+      "pattern": "^logo\\.(svg|png)$",
+      "description": "Square logo in this folder: logo.svg or logo.png, at most 100 KB."
+    },
+    "network": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^(\\*\\.)?(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\\.)+[a-z]{2,63}$"
+      },
+      "description": "Every host the template calls, e.g. api.example.com or *.example.com."
+    },
+    "setup_instructions": {
+      "type": "string",
+      "minLength": 20,
+      "maxLength": 1000,
+      "description": "Shown in the install dialog: where the user finds each value."
+    },
+    "config_schema": {
+      "type": "array",
+      "maxItems": 12,
+      "description": "Fields of the install form. Their keys fill the {{key}} placeholders in template.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["key", "label", "type", "required"],
+        "properties": {
+          "key": { "type": "string", "pattern": "^[a-z][a-z0-9_]{0,63}$" },
+          "label": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "type": { "type": "string", "enum": ["text", "textarea", "password", "url", "number", "select"] },
+          "required": { "type": "boolean" },
+          "placeholder": { "type": "string", "maxLength": 200 },
+          "help": { "type": "string", "maxLength": 400 },
+          "options": { "type": "array", "minItems": 1, "maxItems": 50, "items": { "type": "string", "minLength": 1, "maxLength": 200 } },
+          "default_value": { "type": ["string", "number"] },
+          "min": { "type": "number" },
+          "max": { "type": "number" },
+          "step": { "type": "number" }
+        }
+      }
+    },
+    "template": {
+      "type": "object",
+      "description": "The tool Famulor creates on install. kind mcp: {type: mcp, url, headers?, oauth_mcp_url?} or {type: mcp_oauth, mcp_url}. kind api_tool: {type: api, name, description, method, url, ...}. See CONTRIBUTING.md."
+    }
+  }
+}

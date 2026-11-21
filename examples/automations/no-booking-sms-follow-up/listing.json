@@ -1,0 +1,10 @@
+{
+  "$schema": "../../../schemas/automation-listing.schema.json",
+  "slug": "no-booking-sms-follow-up",
+  "version": "1.0.0",
+  "category": "calls",
+  "about": "Runs after every finished call. When the call was inbound, came from a number and ended without a booking, it waits one minute and sends the caller an SMS with your booking link.",
+  "setup_hint": "Pick the assistant, choose the SMS sender and replace [your booking link] in the message.",
+  "maintainers": ["bekservice"],
+  "license": "MIT"
+}

@@ -1,0 +1,48 @@
+{
+  "$schema": "../../../schemas/connector.schema.json",
+  "slug": "acme-order-status",
+  "name": "Acme Order Status",
+  "version": "1.0.0",
+  "description": "Let your assistant tell callers where their Acme order is, using the order number they give.",
+  "category": "productivity",
+  "kind": "api_tool",
+  "publisher": { "name": "Acme Inc.", "url": "https://acme.example" },
+  "maintainers": ["acme-dev"],
+  "license": "MIT",
+  "homepage": "https://acme.example",
+  "docs_url": "https://docs.acme.example/famulor",
+  "privacy_url": "https://acme.example/privacy",
+  "support": "https://acme.example/support",
+  "logo": "logo.svg",
+  "network": ["api.acme.example"],
+  "setup_instructions": "In Acme open Settings → API, create a key with read access to orders and paste it here.",
+  "config_schema": [
+    {
+      "key": "api_key",
+      "label": "Acme API key",
+      "type": "password",
+      "required": true,
+      "placeholder": "acme_live_…",
+      "help": "Settings → API in your Acme account."
+    }
+  ],
+  "template": {
+    "type": "api",
+    "name": "get_order_status",
+    "description": "Get the status and expected delivery date of an Acme order. Call it when the caller asks where their order is and has given the order number.",
+    "method": "GET",
+    "url": "https://api.acme.example/v1/order-status",
+    "headers": { "X-Api-Key": "{{api_key}}" },
+    "parameters": [
+      {
+        "name": "order_number",
+        "type": "string",
+        "description": "The order number the caller gives, for example A-10234.",
+        "required": true,
+        "location": "query"
+      }
+    ],
+    "timeout_ms": 8000,
+    "filler_phrase": "One moment, I'm checking your order."
+  }
+}

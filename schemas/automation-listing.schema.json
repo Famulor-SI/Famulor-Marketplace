@@ -1,0 +1,47 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/Famulor-SI/famulor-marketplace/schemas/automation-listing.schema.json",
+  "title": "Famulor automation template listing",
+  "description": "automations/<slug>/listing.json — how the template appears in the Automations template gallery. The workflow itself is automation.famulor-automation.json, exported from the app.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["slug", "version", "category", "about", "setup_hint", "maintainers", "license"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,63}$",
+      "description": "Stable id. Equals the folder name. Never rename it after merge."
+    },
+    "version": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+$" },
+    "category": {
+      "type": "string",
+      "enum": ["calls", "bookings", "leads", "messaging", "crm", "team"]
+    },
+    "about": {
+      "type": "string",
+      "minLength": 40,
+      "maxLength": 600,
+      "description": "Short paragraph for the template page: when it runs and what it does."
+    },
+    "setup_hint": {
+      "type": "string",
+      "minLength": 10,
+      "maxLength": 300,
+      "description": "What the user still picks or types after using the template, e.g. the assistant and the SMS sender."
+    },
+    "connectors": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[a-z][a-z0-9-]{1,63}$" },
+      "description": "Slugs of connectors in this repository that the template needs."
+    },
+    "maintainers": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[A-Za-z0-9](?:[A-Za-z0-9-]{0,38})$" }
+    },
+    "license": { "type": "string", "minLength": 2, "maxLength": 64 }
+  }
+}
